@@ -11,6 +11,7 @@
 #
 # ddDirs   <- list.dirs(dataDir, full.names = FALSE, recursive = FALSE)
 # ddFiles  <- list.files(dataDir)[!(list.files(dataDir) %in% ddDirs)]
+library("dplyr", lib.loc="~/R/win-library/3.4")
 #
 # Set Top-Level Directory
 #
@@ -26,10 +27,27 @@ activityLabels <- read.table(fileName, col.names = c("Label", "Activity"))
 fileName <- paste(dataDir, "/features.txt", sep="")
 features <- read.table(fileName, col.names = c("FeatID", "Feature"))
 
-
+#
+# Set  Test & Train Data Directories & Files
+#
+X_test   <- paste(dataDir, "/test/X_test.txt",     sep="")
+y_test   <- paste(dataDir, "/test/y_test.txt",     sep="")
+X_train  <- paste(dataDir, "/train/X_train.txt",   sep="")
+y_train  <- paste(dataDir, "/train/y_train.txt",   sep="")
+mergeDir <- paste(dataDir, "/merged",              sep="")
+X_merged <- paste(dataDir, "/merged/X_merged.txt", sep="")
+y_merged <- paste(dataDir, "/merged/y_merged.txt", sep="")
 
 #
-# Set  Test & Train Data Directories
+# Create Merged Directory
 #
-testDir  <- paste(dataDir, "/test", sep="")
-trainDir <- paste(dataDir, "/train", sep="")
+dir.create(mergeDir)
+
+tt<-read.table(fileName, col.names = features$Feature) %>%
+  names()[grep("mean|std", names() )]
+
+full_join(tt2, activityLabels, by = c("Activity" = "Label"))
+match(tt2$Activity, activityLabels$Label)
+
+
+
